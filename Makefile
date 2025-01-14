@@ -1,10 +1,7 @@
 all:	up
 
 up:
-	docker compose --project-directory srcs up --detach
-
-build: 
-	docker compose --project-directory srcs build
+	docker compose --project-directory srcs up --build --detach
 
 down:	
 	docker compose --project-directory srcs down
