@@ -6,5 +6,8 @@ services:
       - ADMIN_USERNAME=${ADMIN_USERNAME}
       - ADMIN_HOST=${ADMIN_HOST}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - WP_USERNAME=${WP_USERNAME}
+      - WP_HOST=${WP_HOST}
+      - WP_PASSWORD=${WP_PASSWORD}
     expose:
       - 3306
