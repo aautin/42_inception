@@ -11,3 +11,19 @@ services:
       - WP_PASSWORD=${WP_PASSWORD}
     expose:
       - 3306
+    restart: always
+    networks:
+      - inception
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+
+volumes:
+  mariadb_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/aautin/data/mysql
+
+networks:
+  inception:
