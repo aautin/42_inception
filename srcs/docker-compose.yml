@@ -11,19 +11,26 @@ services:
       - WP_PASSWORD=${WP_PASSWORD}
     expose:
       - 3306
-    restart: always
     networks:
       - inception
+    restart: always
     volumes:
       - mariadb_volume:/var/lib/mysql
+  wordpress:
+    build: requirements/wordpress
+    container_name: wordpress
+    expose:
+      - 9000
+    networks:
+      - inception
 
 volumes:
   mariadb_volume:
     driver: local
     driver_opts:
-      type: none
-      o: bind
       device: /home/aautin/data/mysql
+      o: bind
+      type: none
 
 networks:
   inception:
