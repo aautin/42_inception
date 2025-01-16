@@ -1,4 +1,5 @@
 MARIADB_VOLUME=/home/aautin/data/mysql
+WORDPRESS_VOLUME=/home/aautin/data/wordpress
 UID=$(shell id -u)
 
 all: volumes up
@@ -24,15 +25,21 @@ enter_wordpress:
 
 logs_mariadb:
 	docker compose --project-directory srcs logs mariadb
+logs_wordpress:
+	docker compose --project-directory srcs logs wordpress
 logs:
 	docker compose --project-directory srcs logs
 
 
 $(MARIADB_VOLUME):
 	mkdir -p $@
+$(WORDPRESS_VOLUME):
+	mkdir -p $@
 clean_volumes:
 	docker run --rm -v $(MARIADB_VOLUME):/to_rm/ debian:bullseye chown -R $(UID) /to_rm/
+	docker run --rm -v $(WORDPRESS_VOLUME):/to_rm/ debian:bullseye chown -R $(UID) /to_rm/
 	rm -rf $(MARIADB_VOLUME)
+	rm -rf $(WORDPRESS_VOLUME)
 	
 
 .PHONY: all volumes   up down   mariadb wordpress  enter_mariadb enter_wordpress   logs logs_mariadb   clean_volumes
