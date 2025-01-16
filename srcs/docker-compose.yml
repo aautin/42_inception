@@ -33,6 +33,16 @@ services:
       - inception
     volumes:
       - wordpress_volume:/var/www/html
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
+    networks:
+      - inception
+    volumes:
+      - wordpress_volume:/var/www/html
+    ports:
+      - 443:443 #https
+      - 80:80   #http
 
 volumes:
   mariadb_volume:
