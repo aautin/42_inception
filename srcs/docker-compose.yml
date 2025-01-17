@@ -20,6 +20,8 @@ services:
   wordpress:
     build: requirements/wordpress
     container_name: wordpress
+    depends_on:
+      - mariadb
     environment:
       - DB_NAME=${DB_NAME}
       - DB_USERNAME=${DB_USERNAME}
@@ -36,12 +38,14 @@ services:
   nginx:
     build: requirements/nginx
     container_name: nginx
+    depends_on:
+      - wordpress
     networks:
       - inception
-    volumes:
-      - wordpress_volume:/var/www/html
     ports:
       - 443:443
+    volumes:
+      - wordpress_volume:/var/www/html
 
 volumes:
   mariadb_volume:
