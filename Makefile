@@ -1,15 +1,15 @@
 MARIADB_VOLUME=/home/aautin/data/mysql
 WORDPRESS_VOLUME=/home/aautin/data/wordpress
 UID=$(shell id -u)
-
+ENV=srcs/.env
 
 all: build_volumes up
 
-up:
+up:	$(ENV)
 	docker compose --project-directory srcs up --build --detach
 down:	
 	docker compose --project-directory srcs down --volumes
-
+re: down up
 
 mariadb:
 	docker compose --project-directory srcs up mariadb --build --force-recreate --detach
@@ -36,6 +36,10 @@ logs:
 	docker compose --project-directory srcs logs
 
 
+$(ENV): ../.env
+	cp $^ $@
+
+
 $(MARIADB_VOLUME):
 	mkdir -p $@
 $(WORDPRESS_VOLUME):
@@ -49,6 +53,7 @@ clean_volumes:
 	docker run --rm -v $(WORDPRESS_VOLUME):/to_rm/ debian:bullseye chown -R $(UID) /to_rm/
 	rm -rf $(MARIADB_VOLUME)
 	rm -rf $(WORDPRESS_VOLUME)
-	
+clean_env: $(ENV)
+	rm -f $^
 
-.PHONY: all   up down   mariadb wordpress nginx   enter_mariadb enter_wordpress   logs logs_mariadb logs_wordpress logs_nginx   build_volumes ls_volumes clean_volumes
+.PHONY: all   up down re   mariadb wordpress nginx   enter_mariadb enter_wordpress   logs logs_mariadb logs_wordpress logs_nginx   build_volumes ls_volumes clean_volumes clean_env
